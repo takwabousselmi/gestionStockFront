@@ -1,0 +1,55 @@
+<!-- main app container -->
+<div class="card m-3">
+  <h5 class="card-header">Ajouter  equipe </h5>
+  <div class="card-body">
+
+    <form  #form="ngForm" autocomplete="off"  (ngSubmit)="onSubmit()"
+           method="POST" [formGroup]="EquipeRechForm">
+      <div class="form-group ">
+        <label>libelle:*</label>
+        <input type="text" id="libelle" required="required"
+               class="form-control" [(ngModel)]="service.formData.libelle"
+               name="libelle" formControlName="libelle"
+               [ngClass]="{ 'is-invalid': submitted && f.libelle.errors }">
+        <div *ngIf="submitted && f.libelle.errors" class="invalid-feedback">
+          <div *ngIf="f.libelle.errors.required">libelle est requis</div>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label>unite rech:*</label>
+        <select  class="form-control"
+                 [(ngModel)]="selectedunite"  [ngModelOptions]="{standalone: true}">
+          <option value="" selected></option>
+          <option *ngFor="let lab of listunite" [ngValue]="lab">
+            {{lab.label}}
+          </option>
+        </select>
+      </div>
+
+
+      <div class="form-group ">
+        <label>Date Creaction</label>
+        <input type="date" id="dateCreation" class="form-control"
+               [(ngModel)]="service.formData.dateCreation"
+               name="dateCreation"
+               formControlName="dateCreation"
+               [ngClass]="{ 'is-invalid': submitted && f.dateCreation.errors }">
+
+        <div *ngIf="submitted && f.dateCreation.errors" class="invalid-feedback">
+          <div *ngIf="f.dateCreation.errors.required">Date est requis</div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div class="text-center">
+        <button class="btn btn-primary mr-1"    type="submit" >Ajouter</button>
+        <button class="btn btn-secondary" type="reset" (click)="Retourner()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+

@@ -1,0 +1,42 @@
+<!-- main app container -->
+<div class="card m-3">
+  <h5 class="card-header">Ajouter nouvelle Ligne de commande </h5>
+  <div class="card-body">
+
+    <form  #form="ngForm" autocomplete="off"  (ngSubmit)="onSubmit()" method="POST"
+           [formGroup]="CommandeForm">
+      <div class="form-group ">
+        <label>dateHeure:*</label>
+        <input type="text" id="dateHeure" required="required"
+               class="form-control" [(ngModel)]="service.formData.dateHeure"
+               name="dateHeure" formControlName="dateHeure"
+               [ngClass]="{ 'is-invalid': submitted && f.dateHeure.errors }">
+        <div *ngIf="submitted && f.dateHeure.errors" class="invalid-feedback">
+          <div *ngIf="f.dateHeure.errors.required">dateHeure est requis</div>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label>Prix total:*</label>
+        <input type="text" id="prixTotal" required="required" class="form-control"
+               [(ngModel)]="service.formData.prixTotal"  name="prixTotal" formControlName="prixTotal"
+               [ngClass]="{ 'is-invalid': submitted && f.prixTotal.errors }">
+        <div *ngIf="submitted && f.prixTotal.errors" class="invalid-feedback">
+          <div *ngIf="f.prixTotal.errors.required">prixTotal est requis</div>
+        </div>
+      </div>
+         <div>
+           <!-- <p-listbox [options]="listlignecommande" [(ngModel)]="selectedlignecommande" [multiple]="true" [checkbox]="true" [filter]="true" optionLabel="idLine" ></p-listbox>
+           <p-multiSelect [options]="listlignecommande" [(ngModel)]="selectedlignecommande"></p-multiSelect>
+-->
+         </div>
+      <div class="text-center">
+        <button class="btn btn-primary mr-1"    type="submit" >Ajouter</button>
+        <button class="btn btn-secondary" type="reset" (click)="Retourner()">Annuler</button>
+      </div>
+
+
+    </form>
+  </div>
+</div>
+
+

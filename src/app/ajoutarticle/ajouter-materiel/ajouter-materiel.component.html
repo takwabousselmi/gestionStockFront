@@ -1,0 +1,94 @@
+<!-- main app container -->
+<div class="card m-3">
+  <h5 class="card-header">Ajouter Materiel</h5>
+  <div class="card-body">
+
+    <form  #form="ngForm" autocomplete="off"
+           (ngSubmit)="onSubmit()" method="POST" [formGroup]="MaterielForm">
+      <div class="form-group ">
+        <label>nom:*</label>
+        <input type="text" id="nom"
+               required="required" class="form-control"
+               [(ngModel)]="service.formData.nom"
+               name="nom"
+               formControlName="nom"  [ngClass]="{ 'is-invalid': submitted && f.nom.errors }">
+        <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
+          <div *ngIf="f.nom.errors.required">nom est requis</div>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label>reference:*</label>
+        <input type="text" id="ref" required="required" class="form-control"
+               [(ngModel)]="service.formData.ref"  name="ref"
+               formControlName="ref"
+               [ngClass]="{ 'is-invalid': submitted && f.ref.errors }">
+        <div *ngIf="submitted && f.ref.errors" class="invalid-feedback">
+          <div *ngIf="f.ref.errors.required"> Reference est requis</div>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label>Quantité:*</label>
+        <input type="text" id="quantite" required="required" class="form-control"
+               [(ngModel)]="service.formData.quantite"  name="quantite"
+               formControlName="quantite"
+               [ngClass]="{ 'is-invalid': submitted && f.quantite.errors }">
+        <div *ngIf="submitted && f.quantite.errors" class="invalid-feedback">
+          <div *ngIf="f.quantite.errors.required">Quantité est requis</div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <label>Prix:*</label>
+        <input type="text" id="prix" required="required" class="form-control"
+               [(ngModel)]="service.formData.prix"  name="prix"
+               formControlName="prix"
+               [ngClass]="{ 'is-invalid': submitted && f.prix.errors }">
+        <div *ngIf="submitted && f.prix.errors" class="invalid-feedback">
+          <div *ngIf="f.prix.errors.required">Prix est requis</div>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label>Description:*</label>
+        <input type="text" id="description" required="required" class="form-control"
+               [(ngModel)]="service.formData.description"  name="description"
+               formControlName="description"
+               [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
+        <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+          <div *ngIf="f.description.errors.required">Description est requis</div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <label>Code Materiel:*</label>
+        <input type="text" id="codeMat" required="required" class="form-control"
+               [(ngModel)]="service.formData.codeMat"  name="codeMat"
+               formControlName="codeMat"
+               [ngClass]="{ 'is-invalid': submitted && f.codeMat.errors }">
+        <div *ngIf="submitted && f.codeMat.errors" class="invalid-feedback">
+          <div *ngIf="f.codeMat.errors.required">Code materielest requis</div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <label>Type materiel:*</label>
+        <input type="text" id="TypeMAt" required="required" class="form-control"
+               [(ngModel)]="service.formData.TypeMAt"  name="TypeMAt"
+               formControlName="TypeMAt"
+               [ngClass]="{ 'is-invalid': submitted && f.TypeMAt.errors }">
+        <div *ngIf="submitted && f.TypeMAt.errors" class="invalid-feedback">
+          <div *ngIf="f.TypeMAt.errors.required">Type materiel est requis</div>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="text-center">
+        <button class="btn btn-primary mr-1"    type="submit" >Ajouter</button>
+        <button class="btn btn-secondary" type="reset" (click)="Retourner()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+

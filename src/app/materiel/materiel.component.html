@@ -1,0 +1,216 @@
+<h1>Gestion des materiels!</h1>
+
+<input matInput (keyup)="applyFilter($event.target.value)" placeholder=" Recherche ...">
+<button mat-button matPrefix mat-icon-button>
+  <mat-icon>search</mat-icon>
+</button>
+<div class="col-6 col-sm-4 col-md-2" style="margin-left: 80%">
+  <button routerLink="/ajouter-mat" class="btn btn-block btn-primary" type="button">Ajouter</button>
+</div>
+<br>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort class="col-12">
+
+    <ng-container matColumnDef="nom">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Nom </th>
+      <td mat-cell *matCellDef="let pd "> {{pd.nom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ref">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Reference </th>
+      <td mat-cell *matCellDef="let pd "> {{pd.ref}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantite">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Quantite </th>
+      <td mat-cell *matCellDef="let pd "> {{pd.quantite}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prix">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Prix</th>
+      <td mat-cell *matCellDef="let pd "> {{pd.prix}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header >description </th>
+      <td mat-cell *matCellDef="let pd "> {{pd.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="codeMat">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header >Code mat</th>
+      <td mat-cell *matCellDef="let pd "> {{pd.codeMat}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="TypeMAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Type mat </th>
+      <td mat-cell *matCellDef="let pd "> {{pd.TypeMAt}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+      <td mat-cell *matCellDef="let pd ">
+
+        <button mat-button color="primary"
+                title="Update"
+                data-toggle="modal" data-target="#exampleModal" (click)=" populateForm(pd)" >
+          <i class="material-icons" > edit</i>
+        </button>
+
+        <button mat-button color="primary"   title="Delete"
+                data-toggle="modal" data-target="#deletemodal" (click)=" populateForm(pd)" >
+          <i class="material-icons" > delete</i>
+        </button>
+
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let pd ; columns: displayedColumns;">
+
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"  showFirstLastButtons></mat-paginator>
+</div>
+
+<!-- ********************End modal ********************* -->
+<!-- Modal delete -->
+<div class="modal fade bd-example-modal-lg"
+     id="deletemodal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletemodalLabel">Supprimer Materiel</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      Voulez-vous vraiment supprimer ce materiel?
+      <div class="modal-footer">
+        <button mat-button color="warn"
+                (click)="onDelete(service.formData.idArticle)"
+                data-dismiss="modal">Supprimer</button>
+        <button mat-button color="primary"  data-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ********************End modal ********************* -->
+
+
+<!-- Modal update -->
+<div class="modal fade bd-example-modal-lg"
+     id="exampleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier Materiel</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm" autocomplete="off"
+              (ngSubmit)="updateRecord(form)" method="PUT" [formGroup]="MaterielForm">
+          <div class="form-group ">
+            <label>Nom materiel:*</label>
+            <input type="text" id="nom"
+                   required="required"
+                   class="form-control"
+                   [(ngModel)]="service.formData.nom"
+                   name="nom" formControlName="nom"
+                   [ngClass]="{ 'is-invalid': submitted && f.nom.errors }">
+            <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
+              <div *ngIf="f.nom.errors.required">Nom est requis</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>ref:*</label>
+            <input  id="ref"  required="required" class="form-control"
+                    name="ref"
+                    [(ngModel)]="service.formData.ref"
+                    formControlName="ref"
+                    [ngClass]="{ 'is-invalid': submitted && f.ref.errors }">
+            <div *ngIf="submitted && f.ref.errors" class="invalid-feedback">
+              <div *ngIf="f.ref.errors.required">ref est requis</div>
+            </div>
+          </div>
+
+          <div class="form-group ">
+            <label>quantite:*</label>
+            <input type="text" id="quantite"
+                   required="required"
+                   class="form-control"
+                   [(ngModel)]="service.formData.quantite"
+                   name="quantite" formControlName="quantite"
+                   [ngClass]="{ 'is-invalid': submitted && f.quantite.errors }">
+            <div *ngIf="submitted && f.quantite.errors" class="invalid-feedback">
+              <div *ngIf="f.quantite.errors.required"> Quantite est requis</div>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label>Prix:*</label>
+            <input type="text" id="prix"
+                   required="required"
+                   class="form-control"
+                   [(ngModel)]="service.formData.prix"
+                   name="prix" formControlName="prix"
+                   [ngClass]="{ 'is-invalid': submitted && f.prix.errors }">
+            <div *ngIf="submitted && f.prix.errors" class="invalid-feedback">
+              <div *ngIf="f.prix.errors.required">Prix est requis</div>
+            </div>
+          </div>
+
+          <div class="form-group ">
+            <label>Description:*</label>
+            <input type="text" id="Description"
+                   required="required"
+                   class="form-control"
+                   [(ngModel)]="service.formData.description"
+                   name="email" formControlName="description"
+                   [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
+            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+              <div *ngIf="f.description.errors.required"> Description est requis</div>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label>Code mat:*</label>
+            <input type="text" id="codeMat"
+                   required="required"
+                   class="form-control"
+                   [(ngModel)]="service.formData.codeMat"
+                   name="codeMat" formControlName="codeMat"
+                   [ngClass]="{ 'is-invalid': submitted && f.codeMat.errors }">
+            <div *ngIf="submitted && f.codeMat.errors" class="invalid-feedback">
+              <div *ngIf="f.codeMat.errors.required"> Code mat est requis</div>
+            </div>
+          </div>
+
+          <div class="form-group ">
+            <label>Type mat:*</label>
+            <input type="text" id="TypeMAt"
+                   required="required"
+                   class="form-control"
+                   [(ngModel)]="service.formData.TypeMAt"
+                   name="TypeMAt" formControlName="TypeMAt"
+                   [ngClass]="{ 'is-invalid': submitted && f.TypeMAt.errors }">
+            <div *ngIf="submitted && f.TypeMAt.errors" class="invalid-feedback">
+              <div *ngIf="f.TypeMAt.errors.required"> Type mat est requis</div>
+            </div>
+          </div>
+
+
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button mat-button color="warn" (click)="onSubmit(form)" data-dismiss="modal">Sauvgarder</button>
+        <button mat-button color="primary"  data-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ********************End modal ********************* -->
+
+

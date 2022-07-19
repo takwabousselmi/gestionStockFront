@@ -1,0 +1,129 @@
+<h1>Gestion des lignes de commande</h1>
+
+
+<input matInput (keyup)="applyFilter($event.target.value)" placeholder=" Recherche ...">
+<button mat-button matPrefix mat-icon-button>
+  <mat-icon>search</mat-icon>
+</button>
+<div class="col-6 col-sm-4 col-md-2" style="margin-left: 80%">
+  <button routerLink="/ajoutligne" class="btn btn-block btn-primary" type="button">Ajouter</button>
+</div>
+<br>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort class="col-12">
+
+    <ng-container matColumnDef="quantite">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > quantite</th>
+      <td mat-cell *matCellDef="let pd "> {{pd.quantite}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prix">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > prix </th>
+      <td mat-cell *matCellDef="let pd "> {{pd.prix}} </td>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+      <td mat-cell *matCellDef="let pd ">
+
+        <button mat-button color="primary"
+                title="Update"
+                data-toggle="modal" data-target="#exampleModal" (click)=" populateForm(pd)" >
+          <i class="material-icons" > edit</i>
+        </button>
+
+        <button mat-button color="primary"   title="Delete"
+                data-toggle="modal" data-target="#deletemodal" (click)=" populateForm(pd)" >
+          <i class="material-icons" > delete</i>
+        </button>
+
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let pd ; columns: displayedColumns;">
+
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"  showFirstLastButtons></mat-paginator>
+</div>
+
+<!-- ********************End modal ********************* -->
+<!-- Modal delete -->
+<div class="modal fade bd-example-modal-lg"
+     id="deletemodal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletemodalLabel">Supprimer cette Ligne de commande</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      Voulez-vous vraiment supprimer cette ligne de commande?
+      <div class="modal-footer">
+        <button mat-button color="warn"
+                (click)="onDelete(service.formData.idLine)"
+                data-dismiss="modal">Supprimer</button>
+        <button mat-button color="primary"  data-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ********************End modal ********************* -->
+
+
+<!-- Modal update -->
+<div class="modal fade bd-example-modal-lg"
+     id="exampleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier Ligne de commande</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm" autocomplete="off"
+              (ngSubmit)="updateRecord(form)" method="PUT" [formGroup]="LignedecommandeForm">
+          <div class="form-group ">
+            <label>Quantité:*</label>
+            <input type="text" id="quantite"
+                   required="required"
+                   class="form-control"
+                   [(ngModel)]="service.formData.quantite"
+                   name="quantite" formControlName="quantite"
+                   [ngClass]="{ 'is-invalid': submitted && f.quantite.errors }">
+            <div *ngIf="submitted && f.quantite.errors" class="invalid-feedback">
+              <div *ngIf="f.quantite.errors.required">Quantité est requis</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Prix:*</label>
+            <input  id="prix"  required="required" class="form-control"
+                    name="prix"
+                    [(ngModel)]="service.formData.prix"
+                    formControlName="prix"
+                    [ngClass]="{ 'is-invalid': submitted && f.prix.errors }">
+            <div *ngIf="submitted && f.prix.errors" class="invalid-feedback">
+              <div *ngIf="f.prix.errors.required">Prix est requis</div>
+            </div>
+          </div>
+
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button mat-button color="warn" (click)="onSubmit(form)" data-dismiss="modal">Sauvgarder</button>
+        <button mat-button color="primary"  data-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ********************End modal ********************* -->
+

@@ -1,0 +1,135 @@
+<h1>Gestion  de commandes</h1>
+
+
+<input matInput (keyup)="applyFilter($event.target.value)" placeholder=" Recherche ...">
+<button mat-button matPrefix mat-icon-button>
+  <mat-icon>search</mat-icon>
+</button>
+<div class="col-6 col-sm-4 col-md-2" style="margin-left: 80%">
+  <button routerLink="/ajoutcommande" class="btn btn-block btn-primary" type="button">Ajouter</button>
+</div>
+<br>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort class="col-12">
+
+    <ng-container matColumnDef="dateHeure">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > dateHeure</th>
+      <td mat-cell *matCellDef="let pd "> {{pd.dateHeure}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prixTotal">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > prixTotal </th>
+      <td mat-cell *matCellDef="let pd "> {{pd.prixTotal}} </td>
+    </ng-container>
+    <ng-container matColumnDef="ligneDeCommande">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > ligneDeCommande </th>
+      <td mat-cell *matCellDef="let pd "> {{pd.ligneDeCommande}} </td>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+      <td mat-cell *matCellDef="let pd ">
+
+        <button mat-button color="primary"
+                title="Update"
+                data-toggle="modal" data-target="#exampleModal" (click)=" populateForm(pd)" >
+          <i class="material-icons" > edit</i>
+        </button>
+
+        <button mat-button color="primary"   title="Delete"
+                data-toggle="modal" data-target="#deletemodal" (click)=" populateForm(pd)" >
+          <i class="material-icons" > delete</i>
+        </button>
+
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let pd ; columns: displayedColumns;">
+
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"  showFirstLastButtons></mat-paginator>
+</div>
+
+<!-- ********************End modal ********************* -->
+<!-- Modal delete -->
+<div class="modal fade bd-example-modal-lg"
+     id="deletemodal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletemodalLabel">Supprimer cette commande</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      Voulez-vous vraiment supprimer cette  commande?
+      <div class="modal-footer">
+        <button mat-button color="warn"
+                (click)="onDelete(service.formData.idC)"
+                data-dismiss="modal">Supprimer</button>
+        <button mat-button color="primary"  data-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ********************End modal ********************* -->
+
+
+<!-- Modal update -->
+<div class="modal fade bd-example-modal-lg"
+     id="exampleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier  commande</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm" autocomplete="off"
+              (ngSubmit)="updateRecord(form)" method="PUT" [formGroup]="CommandeForm">
+          <div class="form-group ">
+            <label>Date et heure:*</label>
+            <input type="text" id="dateHeure"
+                   required="required"
+                   class="form-control"
+                   [(ngModel)]="service.formData.dateHeure"
+                   name="dateHeure" formControlName="dateHeure"
+                   [ngClass]="{ 'is-invalid': submitted && f.dateHeure.errors }">
+            <div *ngIf="submitted && f.dateHeure.errors" class="invalid-feedback">
+              <div *ngIf="f.dateHeure.errors.required">dateHeure est requis</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Prix total:*</label>
+            <input  id="prixTotal"  required="required" class="form-control"
+                    name="prixTotal"
+                    [(ngModel)]="service.formData.prixTotal"
+                    formControlName="prixTotal"
+                    [ngClass]="{ 'is-invalid': submitted && f.prixTotal.errors }">
+            <div *ngIf="submitted && f.prixTotal.errors" class="invalid-feedback">
+              <div *ngIf="f.prixTotal.errors.required">Prix total est requis</div>
+            </div>
+          </div>
+
+
+
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button mat-button color="warn" (click)="onSubmit(form)" data-dismiss="modal">Sauvgarder</button>
+        <button mat-button color="primary"  data-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ********************End modal ********************* -->
+
